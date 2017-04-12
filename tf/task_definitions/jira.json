@@ -1,0 +1,15 @@
+[
+  {
+    "name": "atb-jira-service",
+    "image": "602062455022.dkr.ecr.us-east-1.amazonaws.com/atb-jira",
+    "cpu": 512,
+    "memory": 1024,
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "hostPort": 8080
+      }
+    ]
+  }
+]
