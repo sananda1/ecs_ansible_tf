@@ -1,6 +1,6 @@
 # Create a new load balancer
-resource "aws_elb" "atlassian-jira-elb" {
-  name               = "atlassian-jira-elb"
+resource "aws_elb" "elb" {
+  name               = "${var.ecs_cluster_name}-ELB"
   availability_zones   = ["${split(",", var.availability_zones)}"]
 
 /*  access_logs {
@@ -16,7 +16,8 @@ resource "aws_elb" "atlassian-jira-elb" {
     lb_protocol       = "http"
   }
 
-  /*listener {
+  /*
+  listener {
     instance_port      = 8080
     instance_protocol  = "http"
     lb_port            = 443
@@ -40,6 +41,6 @@ resource "aws_elb" "atlassian-jira-elb" {
   connection_draining_timeout = 400
 
   tags {
-    Name = "atlassian-jira-elb"
+    Name = "${var.ecs_cluster_name}-ELB"
   }
 }

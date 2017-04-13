@@ -1,6 +1,23 @@
 resource "aws_ecs_task_definition" "service" {
-  family                = "run-jira-service"
-  container_definitions = "${file("task_definitions/jira.json")}"
+  family                = "${var.ecs_container_name}-td-service"
+  #container_definitions = "${file("task_definitions/jira.json")}"
+  container_definitions = <<CDEF
+          [
+            {
+              "name": "${var.ecs_container_name}",
+              "image" : "${var.ecs_ecr_loc}/${var.ecs_container_name}",
+              "cpu": 512,
+              "memory": 1024,
+              "essential": true,
+              "portMappings": [
+                {
+                  "containerPort": ${var.ecs_container_port},
+                  "hostPort": 8080
+                }
+              ]
+            }
+          ]
+          CDEF
 
 /*
 volume {
@@ -16,7 +33,7 @@ volume {
 }
 
 resource "aws_ecs_service" "service" {
-  name            = "run-jira-service"
+  name            = "${var.ecs_container_name}-service"
   cluster         = "${aws_ecs_cluster.atb-atlassian.name}"
   task_definition = "${aws_ecs_task_definition.service.arn}"
   desired_count   = 1
@@ -40,9 +57,9 @@ resource "aws_ecs_service" "service" {
 */
 
   load_balancer {
-    elb_name            = "${aws_elb.atlassian-jira-elb.name}"
+    elb_name            = "${aws_elb.elb.name}"
     container_name      = "${var.ecs_container_name}"
-    container_port      = 8080
+    container_port      = "${var.ecs_container_port}"
   }
 
 }

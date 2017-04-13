@@ -1,21 +1,15 @@
+variable "ecs_cluster_name" {}
+variable "ecs_container_name" {}
+variable "region" {}
+variable "instance_type" {}
+variable "min_size" {}
+variable "max_size" {}
+variable "desired_capacity" {}
+variable "ecs_container_port" {}
+
 variable "availability_zones" {
   description = "The availability zones in us east"
   default = "us-east-1d,us-east-1e"
-}
-
-variable "ecs_cluster_name" {
-  description = "The name of the Amazon ECS cluster."
-  default = "atb-atlassian-prod"
-}
-
-variable "ecs_container_name" {
-  description = "The name of the container."
-  default = "atb-jira-service"
-}
-
-/* Region for ECS */
-variable "region" {
-  default = "us-east-1"
 }
 
 /* ECS optimized AMIs per region */
@@ -23,10 +17,6 @@ variable "amis" {
   default = {
     us-east-1      = "ami-275ffe31"
   }
-}
-
-variable "instance_type" {
-  default = "m4.large"
 }
 
 variable "key_name" {
@@ -39,13 +29,7 @@ variable "key_file" {
   default = ""
 }
 
-variable "min_size" {
-  default = 1
-}
-variable "max_size" {
-  default = 2
-}
-
-variable "desired_capacity" {
-  default = 1
+variable "ecs_ecr_loc" {
+  description = "ECR location for Docker containers."
+  default = "602062455022.dkr.ecr.us-east-1.amazonaws.com"
 }

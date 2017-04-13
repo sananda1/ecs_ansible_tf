@@ -6,7 +6,7 @@ resource "aws_ecs_cluster" "atb-atlassian" {
  * Launch configuration used by autoscaling group
  */
 resource "aws_launch_configuration" "ecs-atlassian-alc" {
-  name                 = "ecs-atlassian-alc"
+  name                 = "${var.ecs_cluster_name}-ALC"
   image_id             = "${lookup(var.amis, var.region)}"
   instance_type        = "${var.instance_type}"
   key_name             = "${var.key_name}" 
@@ -20,7 +20,7 @@ resource "aws_launch_configuration" "ecs-atlassian-alc" {
  * Autoscaling group.
  */
 resource "aws_autoscaling_group" "ecs-atlassian-asg" {
-  name                 = "ecs-atlassian-asg"
+  name                 = "${var.ecs_cluster_name}-ASG"
   availability_zones   = ["${split(",", var.availability_zones)}"]
   launch_configuration = "${aws_launch_configuration.ecs-atlassian-alc.name}"
   min_size             = "${var.min_size}"
@@ -29,23 +29,25 @@ resource "aws_autoscaling_group" "ecs-atlassian-asg" {
   
   tag {
     key = "Name"
-    value = "ATB-Atlassian-ALC"
-	propagate_at_launch = true
+    value = "${var.ecs_cluster_name}-container-instance"
+    propagate_at_launch = true
   }
 
 }
 
-/*
+/**
+ * Security Groups.
+ */
 resource "aws_security_group" "load_balancers" {
-    name = "ecs-atlassian-lb-sg"
+    name = "${var.ecs_cluster_name}-LBSG"
     description = "Allows all traffic"
     #vpc_id = "${aws_vpc.main.id}"
 
     # TODO: do we need to allow ingress besides TCP 80 and 443?
     ingress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
+        from_port = 80
+        to_port = 80
+        protocol = "TCP"
         cidr_blocks = ["0.0.0.0/0"]
     }
 
@@ -58,17 +60,15 @@ resource "aws_security_group" "load_balancers" {
     }
 
   tags {
-    Name ="ecs-atlassian-lb-sg"
+    Name ="${var.ecs_cluster_name}-LBSG"
   }
 }
 
-*/
-
 resource "aws_security_group" "ecs" {
-    name = "ecs-atlassian-sg"
+    name = "${var.ecs_cluster_name}-SG"
     description = "Allows all traffic"
-/*    vpc_id = "${aws_vpc.main.id}"
-*/
+    #vpc_id = "${aws_vpc.main.id}"
+
     # TODO: remove this and replace with a bastion host for SSHing into
     # individual machines.
     ingress {
@@ -93,10 +93,13 @@ resource "aws_security_group" "ecs" {
     }
   
   tags {
-    Name ="ecs-atlassian-sg"
+    Name ="${var.ecs_cluster_name}-SG"
   }
 }
 
+/**
+ * IAM Role and Profile for ECS
+ */
 resource "aws_iam_role" "ecs_host_role" {
     name = "ecs_host_role"
     assume_role_policy = "${file("policies/ecs_role.json")}"
@@ -109,7 +112,7 @@ resource "aws_iam_role_policy" "ecs_instance_role_policy" {
 }
 
 resource "aws_iam_instance_profile" "ecs" {
-    name = "ecs-instance-profile"
+    name = "${var.ecs_cluster_name}-instance-profile"
     path = "/"
     roles = ["${aws_iam_role.ecs_host_role.name}"]
 }
