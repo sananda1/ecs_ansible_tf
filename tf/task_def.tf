@@ -12,7 +12,7 @@ resource "aws_ecs_task_definition" "service" {
               "portMappings": [
                 {
                   "containerPort": ${var.ecs_container_port},
-                  "hostPort": 8080
+                  "hostPort": ${var.ecs_container_port}
                 }
               ]
             }

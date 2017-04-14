@@ -6,6 +6,7 @@ variable "min_size" {}
 variable "max_size" {}
 variable "desired_capacity" {}
 variable "ecs_container_port" {}
+variable "ecs_container_host_port" {}
 
 variable "availability_zones" {
   description = "The availability zones in us east"

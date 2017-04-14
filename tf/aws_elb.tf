@@ -1,6 +1,6 @@
 # Create a new load balancer
 resource "aws_elb" "elb" {
-  name               = "${var.ecs_cluster_name}-ELB"
+  name               = "${var.ecs_container_name}-${var.ecs_cluster_name}-ELB"
   availability_zones   = ["${split(",", var.availability_zones)}"]
 
 /*  access_logs {
@@ -10,7 +10,7 @@ resource "aws_elb" "elb" {
   }
 */
   listener {
-    instance_port     = 8080
+    instance_port     = "${var.ecs_container_port}"
     instance_protocol = "http"
     lb_port           = 80
     lb_protocol       = "http"
@@ -18,7 +18,7 @@ resource "aws_elb" "elb" {
 
   /*
   listener {
-    instance_port      = 8080
+    instance_port      = "${var.ecs_container_port}"
     instance_protocol  = "http"
     lb_port            = 443
     lb_protocol        = "https"
@@ -30,7 +30,7 @@ resource "aws_elb" "elb" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
-    target              = "TCP:8080"
+    target              = "TCP:${var.ecs_container_port}"
     interval            = 10
   }
 

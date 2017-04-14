@@ -72,8 +72,8 @@ resource "aws_security_group" "ecs" {
     # TODO: remove this and replace with a bastion host for SSHing into
     # individual machines.
     ingress {
-        from_port = 8080
-        to_port = 8080
+        from_port = "${var.ecs_container_port}"
+        to_port = "${var.ecs_container_port}"
         protocol = "TCP"
         cidr_blocks = ["0.0.0.0/0"]
     }
