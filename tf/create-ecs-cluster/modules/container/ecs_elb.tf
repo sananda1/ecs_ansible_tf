@@ -1,7 +1,8 @@
 # Create a new load balancer
 resource "aws_elb" "elb" {
-  name               = "${var.ecs_container_name}-${var.ecs_cluster_name}"
-  availability_zones = ["${split(",", var.availability_zones)}"]
+  name              = "${var.ecs_container_name}-${var.ecs_cluster_name}"
+  availability_zones= ["${split(",", var.availability_zones)}"]
+  security_groups   = ["${aws_security_group.load_balancers.id}"]
 
 /*  access_logs {
     bucket        = "foo"
@@ -41,15 +42,20 @@ resource "aws_elb" "elb" {
   connection_draining_timeout = 400
 
   tags {
-    Name                = "${var.ecs_cluster_name}-ELB"
+    Name                = "${var.ecs_container_name}-ELB"
   }
 }
 
+# Create a new load balancer attachment
+resource "aws_autoscaling_attachment" "asg_attachment" {
+  autoscaling_group_name = "${var.ecs_cluster_name}-ASG"
+  elb                    = "${aws_elb.elb.id}"
+}
 /**
  * Security Groups.
  */
 resource "aws_security_group" "load_balancers" {
-    name               = "${var.ecs_cluster_name}-LBSG"
+    name               = "${var.ecs_container_name}-LBSG"
     description        = "Allows all traffic"
     #vpc_id = "${aws_vpc.main.id}"
 
@@ -70,6 +76,6 @@ resource "aws_security_group" "load_balancers" {
     }
 
   tags {
-    Name               ="${var.ecs_cluster_name}-LBSG"
+    Name               ="${var.ecs_container_name}-LBSG"
   }
 }

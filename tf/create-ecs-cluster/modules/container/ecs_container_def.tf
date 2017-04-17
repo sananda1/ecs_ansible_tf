@@ -1,10 +1,15 @@
 resource "aws_ecs_service" "service" {
+
+count = "${replace(replace(replace(var.create_jira,"0",var.create_confluence),"0",var.create_bamboo),"1","1")}"
+
   name            = "${var.ecs_container_name}-service"
-  cluster         = "${aws_ecs_cluster.atb-atlassian.name}"
-  task_definition = "${aws_ecs_task_definition.service.arn}"
+  cluster         = "${var.ecs_cluster_name}"
+  task_definition = "${aws_ecs_task_definition.task.arn}"
   desired_count   = "${var.desired_capacity}"
-  iam_role        = "${aws_iam_role.ecs_host_role.name}"
-  depends_on      = ["aws_iam_role_policy.ecs_instance_role_policy"]
+  iam_role        = "ecs_host_role"
+#  iam_role        = "${aws_iam_role.ecs_host_role.name}"
+#  depends_on      = ["aws_iam_role_policy.ecs_instance_role_policy"]
+#  depends_on      = ["ecs_instance_role_policy"]
 
  placement_strategy {
         field = "attribute:ecs.availability-zone"
@@ -27,10 +32,14 @@ resource "aws_ecs_service" "service" {
     container_name      = "${var.ecs_container_name}"
     container_port      = "${var.ecs_container_port}"
   }
+  
+  lifecycle {
+  create_before_destroy= true
+  }
 }
 
-resource "aws_ecs_task_definition" "service" {
-  family                = "${var.ecs_container_name}-td-service"
+resource "aws_ecs_task_definition" "task" {
+  family                = "${var.ecs_container_name}-task"
   #container_definitions = "${file("task_definitions/jira.json")}"
   container_definitions = <<CDEF
           [
@@ -61,4 +70,8 @@ volume {
     expression = "attribute:ecs.availability-zone in [us-east-1d, us-east-1e]"
   }
   */
+
+  lifecycle {
+  create_before_destroy= true
+  }
 }
