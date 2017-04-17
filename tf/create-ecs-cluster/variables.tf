@@ -39,6 +39,7 @@ variable "ecs_ecr_loc" {
   default     = "602062455022.dkr.ecr.us-east-1.amazonaws.com"
 }
 
+#add variables if you need additonal containers
 variable "ecs_jira_container_name" {
   description = "The jira container name"
   default     = "atb-jira"

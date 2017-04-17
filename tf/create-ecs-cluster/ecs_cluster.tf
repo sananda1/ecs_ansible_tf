@@ -6,6 +6,7 @@ resource "aws_ecs_cluster" "atb-atlassian" {
   }
 }
 
+#add modules if you need additonal containers
 module "atb-jira" {
   source            = "modules/container"
   create_jira       = "${var.atb_jira}"

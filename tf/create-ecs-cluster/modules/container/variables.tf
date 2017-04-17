@@ -1,3 +1,4 @@
+#add variables if you need additonal containers
 variable "ecs_cluster_name" {}
 variable "ecs_container_name" {}
 variable "ecs_container_port" {}
