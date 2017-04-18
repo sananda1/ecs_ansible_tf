@@ -27,3 +27,10 @@ Below variables will decide what your desired values for the container host is. 
     desired_capacity = 2
 
 when doing Jenkins automation, we can create a terraform.tfvars as an output to feed into terraform automation.
+
+
+Inside 
+    tf/create-ecs-role - this will create necessary role and profile to ensure access for ECS and EC2 automation and runtime environment access. This needs to run once and then not needed to run again and again. Although, nothing bad will happen if you run it again. terraform will check and skip the resources
+    
+    tf/create-ecs-cluster - this is where the automation for cluster creation with ASG, ALC, instance and container sits. it has an implementation of terraform module that minimizes redundant code. However we may need to revisit this if we need to have different configurations for the task definitions running docker.
+    
