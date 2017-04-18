@@ -2,8 +2,10 @@
 In order to use terraform with this repo, you would need to include
 
 1. secrets.tfvars in your local with two variables
+
     aws_access_key_id="<aws_access_key_id>"
     aws_secret_access_key="<aws_secret_access_key>"
+
 2. Alternatively you can also set above to variables in your environment if you prefer.
 
 Performing step #1 or #2 will setup your environment to connect with AWS.
