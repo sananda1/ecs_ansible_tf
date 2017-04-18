@@ -1,10 +1,3 @@
-resource "aws_iam_instance_profile" "ecs_profile" {
-    name               = "${var.ecs_cluster_name}-instance-profile"
-    path               = "/"
-#    roles              = ["${aws_iam_role.ecs_host_role.name}"]
-    roles              = ["ecs_host_role"]
-}
-
 /**
  * Launch configuration used by autoscaling group
  */
@@ -15,9 +8,11 @@ resource "aws_launch_configuration" "ecs-atlassian-alc" {
   instance_type        = "${var.instance_type}"
   key_name             = "${var.key_name}" 
   security_groups      = ["${aws_security_group.ecs_instance.id}"]
-  iam_instance_profile = "${aws_iam_instance_profile.ecs_profile.name}"
+  iam_instance_profile = "ecs_instance_profile"
+#  iam_instance_profile = "${aws_iam_instance_profile.ecs_profile.id}"
 #  iam_instance_profile = "${var.ecs_cluster_name}-instance-profile"
-  user_data            = "#!/bin/bash\necho ECS_CLUSTER=${var.ecs_cluster_name} > /etc/ecs/ecs.config"
+#  user_data            = "#!/bin/bash\necho ECS_CLUSTER=${var.ecs_cluster_name} > /etc/ecs/ecs.config"
+  user_data            = "#!/bin/bash\necho ECS_CLUSTER=${var.ecs_cluster_name} > /etc/ecs/ecs.config\ndocker run -d --name dd-agent -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc/:/host/proc/:ro -v /cgroup/:/host/sys/fs/cgroup:ro -e API_KEY=2b6259409628aedb7513cce4ad63acf9 -e SD_BACKEND=docker datadog/docker-dd-agent:latest"
 
   lifecycle {
   create_before_destroy= true
