@@ -10,3 +10,7 @@ output "confluence_url" {
 output "bamboo_url" {
 	value = "${module.atb-bamboo.public_dns}"
 }
+
+output "monitoring_url" {
+	value = "${module.atb-monitoring.public_dns}"
+}

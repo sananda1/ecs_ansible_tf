@@ -69,6 +69,12 @@ resource "aws_security_group" "ecs_instance" {
         protocol       = "TCP"
         cidr_blocks    = ["0.0.0.0/0"]
     }
+    ingress {
+        from_port      = "${var.ecs_monitoring_container_port}"
+        to_port        = "${var.ecs_monitoring_container_port}"
+        protocol       = "TCP"
+        cidr_blocks    = ["0.0.0.0/0"]
+    }
 /*
     ingress {
         from_port      = "${var.ecs_container_port}"
