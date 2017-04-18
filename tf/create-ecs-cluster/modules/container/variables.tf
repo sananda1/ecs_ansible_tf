@@ -8,6 +8,7 @@ variable "availability_zones" {}
 variable "create_jira" {}
 variable "create_confluence" {}
 variable "create_bamboo" {}
+variable "create_monitoring" {}
 
 /*variable "region" {}
 variable "instance_type" {}

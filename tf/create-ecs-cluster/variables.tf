@@ -6,6 +6,7 @@ variable "atb_jira" {}
 variable "atb_confluence" {}
 variable "atb_bamboo" {}
 variable "instance_type" {}
+variable "atb_monitoring" {}
 
 variable "region" {
   description = "The AWS region to create the stack"
@@ -48,6 +49,7 @@ variable "ecs_jira_container_port" {
   description = "The jira container port"
   default     = 8080
 }
+
 variable "ecs_confluence_container_name" {
   description = "The confluence container name"
   default     = "atb-confluence"
@@ -56,6 +58,7 @@ variable "ecs_confluence_container_port" {
   description = "The confluence container port"
   default     = 8091
 }
+
 variable "ecs_bamboo_container_name" {
   description = "The atb-bamboo container name"
   default     = "atb-bamboo"
@@ -63,5 +66,13 @@ variable "ecs_bamboo_container_name" {
 variable "ecs_bamboo_container_port" {
     description = "The atb-bamboo container port"
   default     = 8085
+}
 
+variable "ecs_monitoring_container_name" {
+  description = "The atb-monitoring container name"
+  default     = "atb-monitoring"
+}
+variable "ecs_monitoring_container_port" {
+    description = "The atb-monitoring container port"
+  default     = 8081
 }
