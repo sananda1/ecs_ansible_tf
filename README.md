@@ -1,21 +1,17 @@
 # ecs_ansible_tf
-In order to use terraform with this repo, you would need to include
+In order to use terraform with this repo, you would need to
 
-1. secrets.tfvars in your local with two variables
+Create a secrets.tfvars in your local environment
 
-    aws_access_key_id       = "<aws_access_key_id>"
-    aws_secret_access_key   = "<aws_secret_access_key>"
+    aws_access_key_id = "<aws_access_key_id>"           - access key ID from your AWS profile
+    aws_secret_access_key = "<aws_secret_access_key>"   - secret access key from your AWS profile
 
-2. Alternatively you can also set above to variables in your environment if you prefer.
-
-Performing step #1 or #2 will setup your environment to connect with AWS.
+Alternatively you can also set above to variables in your environment if you prefer. Performing step #1 or #2 will setup your environment to connect with AWS.
 
 Secondly, you will now need to setup terraform.tfvars file with following variables
 
     ecs_cluster_name = "<pick a name>"  - a name that you want to see in AWS for your cluster
     instance_type = "t2.large"          - any size that is supported by AWS
-
-#add input variables if you need additonal containers
 
     atb_jira = 1                        - this is a boolean value, if 1 it will create JIRA
     atb_confluence = 1                  - this is a boolean value, if 1 it will create Confluence
