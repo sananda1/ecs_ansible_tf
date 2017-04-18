@@ -44,13 +44,24 @@ resource "aws_elb" "elb" {
   tags {
     Name                = "${var.ecs_container_name}-ELB"
   }
+
+  lifecycle {
+  create_before_destroy= true
+  }
 }
 
 # Create a new load balancer attachment
 resource "aws_autoscaling_attachment" "asg_attachment" {
   autoscaling_group_name = "${var.ecs_cluster_name}-ASG"
   elb                    = "${aws_elb.elb.id}"
+  
+#  depends_on           = ["atlassian-prod-instance-profile"]
+
+  lifecycle {
+  create_before_destroy= true
+  }
 }
+
 /**
  * Security Groups.
  */
@@ -77,5 +88,9 @@ resource "aws_security_group" "load_balancers" {
 
   tags {
     Name               ="${var.ecs_container_name}-LBSG"
+  }
+
+  lifecycle {
+  create_before_destroy= true
   }
 }

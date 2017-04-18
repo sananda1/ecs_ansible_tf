@@ -1,5 +1,6 @@
 resource "aws_ecs_service" "service" {
 
+#add additional conditions if more containers are needed
 count = "${replace(replace(replace(var.create_jira,"0",var.create_confluence),"0",var.create_bamboo),"1","1")}"
 
   name            = "${var.ecs_container_name}-service"
