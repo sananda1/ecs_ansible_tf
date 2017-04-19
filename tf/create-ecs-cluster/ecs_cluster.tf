@@ -1,3 +1,13 @@
+/*data "terraform_remote_state" "remote-setup" {
+  backend = "s3"
+  config {
+    bucket = "atb-tf-remote-state"
+    key    = "${var.ecs_cluster_name}/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+*/
+
 resource "aws_ecs_cluster" "atb-atlassian" {
   name                 = "${var.ecs_cluster_name}"
 
@@ -26,7 +36,7 @@ module "atb-jira" {
   desired_capacity  = "${var.desired_capacity}"
   ecs_ecr_loc       = "${var.ecs_ecr_loc}"
   availability_zones= "${var.availability_zones}"
-
+  elb_sg            = "${aws_security_group.load_balancers.id}"
 }
 
 module "atb-confluence" {
@@ -48,7 +58,7 @@ module "atb-confluence" {
   desired_capacity  = "${var.desired_capacity}"
   ecs_ecr_loc       = "${var.ecs_ecr_loc}"
   availability_zones= "${var.availability_zones}"
-
+  elb_sg            = "${aws_security_group.load_balancers.id}"
 }
 
 module "atb-bamboo" {
@@ -70,7 +80,7 @@ module "atb-bamboo" {
   desired_capacity  = "${var.desired_capacity}"
   ecs_ecr_loc       = "${var.ecs_ecr_loc}"
   availability_zones= "${var.availability_zones}"
-
+  elb_sg            = "${aws_security_group.load_balancers.id}"
 }
 
 module "atb-monitoring" {
@@ -92,5 +102,5 @@ module "atb-monitoring" {
   desired_capacity  = "${var.desired_capacity}"
   ecs_ecr_loc       = "${var.ecs_ecr_loc}"
   availability_zones= "${var.availability_zones}"
-
+  elb_sg            = "${aws_security_group.load_balancers.id}"
 }
