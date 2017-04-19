@@ -2,7 +2,7 @@
 resource "aws_elb" "elb" {
   name              = "${var.ecs_container_name}-${var.ecs_cluster_name}"
   availability_zones= ["${split(",", var.availability_zones)}"]
-  security_groups   = ["${aws_security_group.load_balancers.id}"]
+  security_groups   = ["${var.elb_sg}"]
 
 /*  access_logs {
     bucket        = "foo"
@@ -56,39 +56,6 @@ resource "aws_autoscaling_attachment" "asg_attachment" {
   elb                    = "${aws_elb.elb.id}"
   
 #  depends_on           = ["atlassian-prod-instance-profile"]
-
-  lifecycle {
-  create_before_destroy= true
-  }
-}
-
-/**
- * Security Groups.
- */
-resource "aws_security_group" "load_balancers" {
-    name               = "${var.ecs_container_name}-LBSG"
-    description        = "Allows all traffic"
-    #vpc_id = "${aws_vpc.main.id}"
-
-    # TODO: do we need to allow ingress besides TCP 80 and 443?
-    ingress {
-        from_port      = 80
-        to_port        = 80
-        protocol       = "TCP"
-        cidr_blocks    = ["0.0.0.0/0"]
-    }
-
-    # TODO: this probably only needs egress to the ECS security group.
-    egress {
-        from_port      = 0
-        to_port        = 0
-        protocol       = "-1"
-        cidr_blocks    = ["0.0.0.0/0"]
-    }
-
-  tags {
-    Name               ="${var.ecs_container_name}-LBSG"
-  }
 
   lifecycle {
   create_before_destroy= true
