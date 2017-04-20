@@ -18,5 +18,16 @@ resource "aws_iam_instance_profile" "ecs_profile" {
     name               = "ecs_instance_profile"
     path               = "/"
     role              = "${aws_iam_role.ecs_host_role.id}"
-#    roles              = ["ecs_host_role"]
+}
+
+resource "aws_iam_role_policy" "ecs_s3_role_policy" {
+    name               = "ecs_s3_role_policy"
+    policy             = "${file("policies/s3_policy.json")}"
+    role               = "${aws_iam_role.ecs_host_role.id}"
+}
+
+resource "aws_iam_instance_profile" "s3_profile" {
+    name               = "ecs_s3_profile"
+    path               = "/"
+    role              = "${aws_iam_role.ecs_host_role.id}"
 }
