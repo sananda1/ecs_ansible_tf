@@ -50,12 +50,20 @@ resource "aws_ecs_task_definition" "task" {
               "cpu": 512,
               "memory": 1024,
               "essential": true,
+              "logConfiguration": {
+                "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-group": "${var.ecs_cluster_name}",
+                        "awslogs-region": "${var.region}",
+                        "awslogs-stream-prefix": "${var.ecs_container_name}"
+                    }
+              },
               "portMappings": [
-                {
-                  "containerPort": ${var.ecs_container_port},
-                  "hostPort": ${var.ecs_container_port}
-                }
-              ]
+                  {
+                    "containerPort": ${var.ecs_container_port},
+                    "hostPort": ${var.ecs_container_port}
+                  }
+                ]
             }
           ]
           CDEF

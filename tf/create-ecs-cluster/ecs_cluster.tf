@@ -38,6 +38,7 @@ module "atb-jira" {
   ecs_ecr_loc       = "${var.ecs_ecr_loc}"
   availability_zones= "${var.availability_zones}"
   elb_sg            = "${aws_security_group.load_balancers.id}"
+  region            = "${var.region}"
 }
 
 module "atb-confluence" {
@@ -54,6 +55,7 @@ module "atb-confluence" {
   ecs_ecr_loc       = "${var.ecs_ecr_loc}"
   availability_zones= "${var.availability_zones}"
   elb_sg            = "${aws_security_group.load_balancers.id}"
+  region            = "${var.region}"
 }
 
 module "atb-bamboo" {
@@ -70,6 +72,7 @@ module "atb-bamboo" {
   ecs_ecr_loc       = "${var.ecs_ecr_loc}"
   availability_zones= "${var.availability_zones}"
   elb_sg            = "${aws_security_group.load_balancers.id}"
+  region            = "${var.region}"
 }
 
 module "atb-monitoring" {
@@ -86,4 +89,5 @@ module "atb-monitoring" {
   ecs_ecr_loc       = "${var.ecs_ecr_loc}"
   availability_zones= "${var.availability_zones}"
   elb_sg            = "${aws_security_group.load_balancers.id}"
+  region            = "${var.region}"
 }

@@ -10,8 +10,9 @@ variable "create_confluence" {}
 variable "create_bamboo" {}
 variable "create_monitoring" {}
 variable "elb_sg" {}
+variable "region" {}
 
-/*variable "region" {}
+/*
 variable "instance_type" {}
 variable "min_size" {}
 variable "max_size" {}
