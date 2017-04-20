@@ -1,0 +1,17 @@
+{
+  "Id": "Policy1492624255419",
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1492624245556",
+      "Action": "s3:*",
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::atb-tf-remote-state",
+      "Principal": {
+        "AWS": [
+          "*"
+        ]
+      }
+    }
+  ]
+}
