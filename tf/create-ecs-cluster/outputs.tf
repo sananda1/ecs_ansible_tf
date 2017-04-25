@@ -14,3 +14,7 @@ output "bamboo_url" {
 output "monitoring_url" {
 	value = "${module.atb-monitoring.public_dns}"
 }
+
+output "crucible_fisheye_url" {
+	value = "${module.atb-crucible_fisheye.public_dns}"
+}

@@ -25,11 +25,12 @@ resource "aws_ecs_cluster" "atb-atlassian" {
 
 #add modules if you need additonal containers
 module "atb-jira" {
-  source            = "modules/container"
-  create_jira       = "${var.atb_jira}"
-  create_confluence = 0
-  create_bamboo     = 0
-  create_monitoring = 0
+  source                  = "modules/container"
+  create_jira             = "${var.atb_jira}"
+  create_confluence       = 0
+  create_bamboo           = 0
+  create_monitoring       = 0
+  create_crucible_fisheye = 0
 
   ecs_cluster_name  = "${var.ecs_cluster_name}"
   ecs_container_name= "${var.ecs_jira_container_name}"
@@ -42,11 +43,12 @@ module "atb-jira" {
 }
 
 module "atb-confluence" {
-  source            = "modules/container"
-  create_confluence = "${var.atb_confluence}"
-  create_jira       = 0
-  create_bamboo     = 0
-  create_monitoring = 0
+  source                  = "modules/container"
+  create_confluence       = "${var.atb_confluence}"
+  create_jira             = 0
+  create_bamboo           = 0
+  create_monitoring       = 0
+  create_crucible_fisheye = 0 
 
   ecs_cluster_name  = "${var.ecs_cluster_name}"
   ecs_container_name= "${var.ecs_confluence_container_name}"
@@ -59,11 +61,12 @@ module "atb-confluence" {
 }
 
 module "atb-bamboo" {
-  source            = "modules/container"
-  create_bamboo     = "${var.atb_bamboo}"
-  create_jira       = 0
-  create_confluence = 0
-  create_monitoring = 0
+  source                  = "modules/container"
+  create_bamboo           = "${var.atb_bamboo}"
+  create_jira             = 0
+  create_confluence       = 0
+  create_monitoring       = 0
+  create_crucible_fisheye = 0
 
   ecs_cluster_name  = "${var.ecs_cluster_name}"
   ecs_container_name= "${var.ecs_bamboo_container_name}"
@@ -76,11 +79,12 @@ module "atb-bamboo" {
 }
 
 module "atb-monitoring" {
-  source            = "modules/container"
-  create_monitoring = "${var.atb_monitoring}"
-  create_jira       = 0
-  create_confluence = 0
-  create_bamboo     = 0
+  source                  = "modules/container"
+  create_monitoring       = "${var.atb_monitoring}"
+  create_jira             = 0
+  create_confluence       = 0
+  create_bamboo           = 0
+  create_crucible_fisheye = 0
 
   ecs_cluster_name  = "${var.ecs_cluster_name}"
   ecs_container_name= "${var.ecs_monitoring_container_name}"
@@ -91,3 +95,22 @@ module "atb-monitoring" {
   elb_sg            = "${aws_security_group.load_balancers.id}"
   region            = "${var.region}"
 }
+
+module "atb-crucible_fisheye" {
+  source                  = "modules/container"
+  create_crucible_fisheye = "${var.atb_crucible_fisheye}"
+  create_jira             = 0
+  create_confluence       = 0
+  create_bamboo           = 0
+  create_monitoring       = 0
+
+  ecs_cluster_name  = "${var.ecs_cluster_name}"
+  ecs_container_name= "${var.ecs_crucible_fisheye_container_name}"
+  ecs_container_port= "${var.ecs_crucible_fisheye_container_port}"
+  desired_capacity  = "${var.desired_capacity}"
+  ecs_ecr_loc       = "${var.ecs_ecr_loc}"
+  availability_zones= "${var.availability_zones}"
+  elb_sg            = "${aws_security_group.load_balancers.id}"
+  region            = "${var.region}"
+}
+

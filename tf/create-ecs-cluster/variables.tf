@@ -7,6 +7,7 @@ variable "atb_confluence" {}
 variable "atb_bamboo" {}
 variable "instance_type" {}
 variable "atb_monitoring" {}
+variable "atb_crucible_fisheye" {}
 
 variable "region" {
   description = "The AWS region to create the stack"
@@ -72,7 +73,18 @@ variable "ecs_monitoring_container_name" {
   description = "The atb-monitoring container name"
   default     = "atb-monitoring"
 }
+
 variable "ecs_monitoring_container_port" {
     description = "The atb-monitoring container port"
   default     = 8081
+}
+
+variable "ecs_crucible_fisheye_container_name" {
+  description = "The crucible_fisheye container name"
+  default     = "crucible-fisheye"
+}
+
+variable "ecs_crucible_fisheye_container_port" {
+    description = "The crucible_fisheye container port"
+  default     = 8060
 }
