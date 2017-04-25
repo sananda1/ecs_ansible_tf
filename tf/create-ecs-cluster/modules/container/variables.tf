@@ -11,6 +11,7 @@ variable "create_bamboo" {}
 variable "create_monitoring" {}
 variable "elb_sg" {}
 variable "region" {}
+variable "create_crucible_fisheye" {}
 
 /*
 variable "instance_type" {}
