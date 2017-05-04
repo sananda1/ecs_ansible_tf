@@ -52,7 +52,7 @@ resource "aws_ecs_task_definition" "task" {
               "name": "${var.ecs_container_name}",
               "image" : "${var.ecs_ecr_loc}/${var.ecs_container_name}",
               "cpu": 512,
-              "memory": 1024,
+              "memory": 2048,
               "essential": true,
               "logConfiguration": {
                 "logDriver": "awslogs",
