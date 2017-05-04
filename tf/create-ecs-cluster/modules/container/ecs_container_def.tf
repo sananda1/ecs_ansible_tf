@@ -1,7 +1,7 @@
 resource "aws_ecs_service" "service" {
 
 #add additional conditions if more containers are needed
-count = "${replace(replace(replace(replace(replace(var.create_jira,"0",var.create_confluence),"0",var.create_bamboo),"0",var.create_monitoring),"0",var.create_crucible_fisheye),"1","1")}"
+  count = "${replace(replace(replace(replace(replace(var.create_jira,"0",var.create_confluence),"0",var.create_bamboo),"0",var.create_monitoring),"0",var.create_crucible_fisheye),"1","1")}"
 
   name            = "${var.ecs_container_name}-service"
   cluster         = "${var.ecs_cluster_name}"
@@ -40,6 +40,10 @@ count = "${replace(replace(replace(replace(replace(var.create_jira,"0",var.creat
 }
 
 resource "aws_ecs_task_definition" "task" {
+
+#add additional conditions if more containers are needed
+  count = "${replace(replace(replace(replace(replace(var.create_jira,"0",var.create_confluence),"0",var.create_bamboo),"0",var.create_monitoring),"0",var.create_crucible_fisheye),"1","1")}"
+
   family                = "${var.ecs_container_name}-task"
   #container_definitions = "${file("task_definitions/jira.json")}"
   container_definitions = <<CDEF

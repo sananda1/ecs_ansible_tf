@@ -1,0 +1,35 @@
+# demo_setup.yml
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+
+    - name: Provision a set of instances
+      ec2:
+         region: "us-east-1"
+         key_name: atb-rotation-key
+#         group: test
+         instance_type: t2.micro
+         image: "ami-c58c1dd3"
+         wait: true
+         exact_count: 1
+         count_tag:
+            Name: Demo
+         instance_tags:
+            Name: Demo
+      register: ec2
+
+    - name: Add all instance public IPs to host group
+      add_host: hostname={{ item.public_ip }} groups=ec2hosts
+      with_items: "{{ ec2.instances }}"
+
+
+# Note: These examples do not set authentication details, see the AWS Guide for details.
+
+# Cluster creation
+#- ecs_cluster:
+#    name: test-cluster
+#    state: present
+

@@ -1,5 +1,9 @@
 # Create a new load balancer
 resource "aws_elb" "elb" {
+
+#add additional conditions if more containers are needed
+  count = "${replace(replace(replace(replace(replace(var.create_jira,"0",var.create_confluence),"0",var.create_bamboo),"0",var.create_monitoring),"0",var.create_crucible_fisheye),"1","1")}"
+
   name              = "${var.ecs_container_name}-${var.ecs_cluster_name}"
   availability_zones= ["${split(",", var.availability_zones)}"]
   security_groups   = ["${var.elb_sg}"]
@@ -52,6 +56,10 @@ resource "aws_elb" "elb" {
 
 # Create a new load balancer attachment
 resource "aws_autoscaling_attachment" "asg_attachment" {
+
+#add additional conditions if more containers are needed
+  count = "${replace(replace(replace(replace(replace(var.create_jira,"0",var.create_confluence),"0",var.create_bamboo),"0",var.create_monitoring),"0",var.create_crucible_fisheye),"1","1")}"
+
   autoscaling_group_name = "${var.ecs_cluster_name}-ASG"
   elb                    = "${aws_elb.elb.id}"
   
